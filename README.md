@@ -21,6 +21,15 @@ The idea is that if the file is tampered with (watermark removed), the original 
 npm install ipftokens
 ```
 
+## Clone and Test Locally
+
+```bash
+git clone https://github.com/hashdive/ipftokens.git
+cd ipftokens
+npm install
+npm run test
+```
+
 ## Usage
 ```Javascript
 import {
