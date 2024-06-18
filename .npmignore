@@ -1,0 +1,6 @@
+test/
+src/test.js
+src/*.pem
+node_modules/
+*.log
+*.md

@@ -1,0 +1,23 @@
+{
+  "name": "ipftokens",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "description": "An open source library for granting temporary access to encrypted IPFS data.",
+  "type": "module",
+  "scripts": {
+    "test": "node src/test.js"
+  },
+  "author": "Hashdive",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "crypto": "^1.0.1",
+    "ethereumjs-util": "^7.1.5",
+    "ethers": "^6.13.1",
+    "ipfs-core": "^0.18.1",
+    "jimp": "^0.22.12",
+    "jsonwebtoken": "^9.0.2",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^4.3.136"
+  }
+}
