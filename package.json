@@ -1,14 +1,29 @@
 {
   "name": "ipftokens",
   "version": "1.0.0",
-  "main": "src/index.js",
+  "main": "index.js",
   "description": "An open source library for granting temporary access to encrypted IPFS data.",
   "type": "module",
   "scripts": {
     "test": "node src/test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hashdive/ipftokens.git"
+  },
+  "keywords": [
+    "IPFS",
+    "JWT",
+    "encryption",
+    "digital-signature",
+    "watermark"
+  ],
   "author": "Hashdive",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hashdive/ipftokens/issues"
+  },
+  "homepage": "https://github.com/Hashdive/ipftokens#readme",
   "dependencies": {
     "axios": "^1.7.2",
     "crypto": "^1.0.1",
