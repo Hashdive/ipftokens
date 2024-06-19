@@ -1,11 +1,11 @@
 {
   "name": "ipftokens",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "1.0.5",
+  "main": "src/index.js",
   "description": "An open source library for granting temporary access to encrypted IPFS data.",
   "type": "module",
   "scripts": {
-    "test": "node src/test.js"
+    "test": "node test/test.js"
   },
   "repository": {
     "type": "git",

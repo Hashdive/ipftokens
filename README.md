@@ -30,6 +30,11 @@ npm install
 npm run test
 ```
 
+## Importing
+
+### ES Module
+The package currently supports ES Modules. Ensure your project has "type": "module" set in package.json, or use the .mjs extension for your JavaScript files.
+
 ## Usage
 ```Javascript
 import {
@@ -49,53 +54,74 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { ethers } from 'ethers';
 
-// Example usage
 (async () => {
-  // Create a wallet
+  // 1. Create a wallet
   const wallet = ethers.Wallet.createRandom();
+  console.log(`Generated Wallet Address: ${wallet.address}`);
+  console.log(`Generated Wallet Private Key: ${wallet.privateKey}`);
 
-  // Sign a message
+  // 2. Sign a message
   const message = 'Hello, IPFS!';
   const signature = await wallet.signMessage(message);
+  console.log(`Message: ${message}`);
+  console.log(`Signature: ${signature}`);
 
-  // Upload a file to IPFS
-  const data = fs.readFileSync('./test.jpg');
+  // 3. Upload a file to IPFS
+  const data = fs.readFileSync(new URL('./test.jpg', import.meta.url)); // Use correct relative path
   const cid = await uploadToIPFS(data);
+  console.log('Uploaded CID:', cid);
   const retrievedData = await getFromIPFS(cid);
+  //console.log('Retrieved Data:', retrievedData);
 
-  // Generate and verify JWT
-  const secretKey = 'your_secret_key';
+  // 4. Generate and verify JWT
+  const secretKey = 'your_secret_key'; // Replace with your secret key
   const payload = { cid: cid, wallet: wallet.address };
-  const token = generateJWT(payload, secretKey, '1h'); // 60 (seconds), 1m, 1h, 1d, 1w
+  const token = generateJWT(payload, secretKey, '1h');
+  console.log('Generated JWT:', token);
   const decoded = verifyJWT(token, secretKey);
+  console.log('Decoded JWT:', decoded);
 
-  // Encrypt and decrypt data
+  // 5. Encrypt and decrypt data
   const secretKeyEnc = crypto.randomBytes(32);
   const encryptedData = encryptData(data, secretKeyEnc);
+  //console.log('Encrypted Data:', encryptedData);
   const decryptedData = decryptData(encryptedData, secretKeyEnc);
+  //console.log('Decrypted Data:', decryptedData.toString());
 
-  // Add an invisible watermark to an image and sign it with the wallet
-  const imageBuffer = fs.readFileSync('./test.jpg');
+  // 6. Create a hash of the image and sign it with the wallet
+  const imageBuffer = fs.readFileSync(new URL('./test.jpg', import.meta.url)); // Use correct relative path
   const imageHash = crypto.createHash('sha256').update(imageBuffer).digest('hex');
   const signedImageHash = await wallet.signMessage(imageHash);
+
+  // 7. Add an invisible watermark to the image using the signed hash
   const watermarkedImage = await watermarkImage(imageBuffer, signedImageHash);
-  fs.writeFileSync('./watermarked_image.png', watermarkedImage);
+  fs.writeFileSync(new URL('./watermarked_image.png', import.meta.url), watermarkedImage); // Use correct relative path
 
-  // Read the invisible watermark from the image
+  // 8. Read the invisible watermark from the image
   const readWatermark = await readWatermarkFromImage(watermarkedImage);
+  console.log('Read Watermark:', readWatermark);
 
-  // Verify the image signature
+  // 9. Verify the image signature
   const isValidImageSignature = verifySignature(imageHash, readWatermark, wallet.address);
+  console.log('Is Image Signature Valid:', isValidImageSignature);
 
-  // Watermark a PDF and sign it with the wallet
-  const pdfBuffer = fs.readFileSync('./test.pdf');
+  // 10. Create a hash of the PDF and sign it with the wallet
+  const pdfBuffer = fs.readFileSync(new URL('./test.pdf', import.meta.url)); // Use correct relative path
   const pdfHash = crypto.createHash('sha256').update(pdfBuffer).digest('hex');
   const signedPdfHash = await wallet.signMessage(pdfHash);
-  const watermarkedPDF = await watermarkPDF(pdfBuffer, signedPdfHash);
-  fs.writeFileSync('./watermarked_pdf.pdf', watermarkedPDF);
 
-  // Verify the PDF signature
+  // 11. Add an invisible watermark to the PDF using the signed hash
+  const watermarkedPDF = await watermarkPDF(pdfBuffer, signedPdfHash);
+  fs.writeFileSync(new URL('./watermarked_pdf.pdf', import.meta.url), watermarkedPDF); // Use correct relative path
+
+  // 12. Verify the PDF signature
   const isValidPDFSignature = verifySignature(pdfHash, signedPdfHash, wallet.address);
+  console.log('Is PDF Signature Valid:', isValidPDFSignature);
+
+  // 13. Verify the message signature
+  const expectedAddress = wallet.address;
+  const isValidMessageSignature = verifySignature(message, signature, expectedAddress);
+  console.log('Is Message Signature Valid:', isValidMessageSignature);
 })();
 ```
 
